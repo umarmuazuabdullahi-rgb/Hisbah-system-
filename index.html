@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Hisbah Board</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Welcome Back</h2>
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button id="loginBtn">Login</button>
+    <p id="loading">🔄 Signing in...</p>
+    <p>Don't have an account? <a href="register.html">Register</a></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+    import { firebaseConfig } from "./js/firebase-config.js";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginBtn = document.getElementById("loginBtn");
+    const loading = document.getElementById("loading");
+
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Please enter your email and password");
+        return;
+      }
+
+      loading.style.display = "block";
+      loginBtn.disabled = true;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+
+        if (userDoc.exists()) {
+          const { role } = userDoc.data();
+          const redirects = {
+            admin: "dashboards/admin-dashboard.html",
+            manager: "dashboards/manager-dashboard.html",
+            command: "dashboards/command-dashboard.html",
+            staff: "dashboards/staff-dashboard.html",
+            intelligence: "dashboards/intelligence-dashboard.html",
+            citizen: "dashboards/citizen-dashboard.html",
+          };
+          window.location.href = redirects[role] || "index.html";
+        } else {
+          alert("No user data found!");
+        }
+      } catch (err) {
+        alert("Login failed: " + err.message);
+      } finally {
+        loading.style.display = "none";
+        loginBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

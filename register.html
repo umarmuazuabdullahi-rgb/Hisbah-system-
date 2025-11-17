@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Hisbah Board</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="register-container">
+    <h2>Create Account</h2>
+    <input type="text" id="fullName" placeholder="Full Name" required />
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="password" id="password" placeholder="Password" required />
+
+    <label for="role">Select Role</label>
+    <select id="role">
+      <option value="citizen">Citizen</option>
+      <option value="staff">Staff</option>
+      <option value="command">Command</option>
+      <option value="intelligence">Intelligence</option>
+      <option value="manager">Manager</option>
+      <option value="admin">Admin</option>
+    </select>
+
+    <button id="registerBtn">Register</button>
+    <p id="loading">⏳ Creating account...</p>
+    <p>Already have an account? <a href="index.html">Login</a></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+    import { firebaseConfig } from "./js/firebase-config.js";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const registerBtn = document.getElementById("registerBtn");
+    const loadingText = document.getElementById("loading");
+
+    registerBtn.addEventListener("click", async () => {
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+
+      if (!fullName || !email || !password) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      loadingText.style.display = "block";
+      registerBtn.disabled = true;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          fullName,
+          email,
+          role,
+          createdAt: new Date().toISOString(),
+        });
+
+        alert("✅ Account created successfully!");
+
+        const redirects = {
+          admin: "dashboards/admin-dashboard.html",
+          manager: "dashboards/manager-dashboard.html",
+          command: "dashboards/command-dashboard.html",
+          staff: "dashboards/staff-dashboard.html",
+          intelligence: "dashboards/intelligence-dashboard.html",
+          citizen: "dashboards/citizen-dashboard.html",
+        };
+        window.location.href = redirects[role] || "index.html";
+      } catch (error) {
+        alert("Registration failed: " + error.message);
+      } finally {
+        loadingText.style.display = "none";
+        registerBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
