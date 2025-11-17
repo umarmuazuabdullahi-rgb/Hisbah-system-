@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intelligence Dashboard | Hisbah Board</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+    import { firebaseConfig } from "../js/firebase-config.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    window.addEventListener("load", () => {
+      const nameEl = document.getElementById("intelName");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const themeBtn = document.getElementById("themeToggle");
+      onAuthStateChanged(auth, async (u)=> {
+        if(!u){ window.location.href="../index.html"; return; }
+        const snap = await getDoc(doc(db,"users",u.uid));
+        if(!snap.exists()){ await signOut(auth); window.location.href="../register.html"; return; }
+        const data = snap.data();
+        if(data.role !== "intelligence"){ alert("Access denied (intelligence only)"); await signOut(auth); window.location.href="../index.html"; return; }
+        nameEl.textContent = data.fullName || u.email;
+      });
+      logoutBtn?.addEventListener("click", async ()=>{ await signOut(auth); window.location.href="../index.html";});
+      themeBtn?.addEventListener("click", ()=>document.body.classList.toggle("dark-mode"));
+    });
+  </script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo-section"><img class="logo" src="data:image/png;base64,..." alt="logo"><h2>Hisbah Intelligence</h2></div>
+      <nav class="nav-links">
+        <button>Dashboard</button>
+        <button>Surveillance</button>
+        <button>Analysis</button>
+        <button>Incident Log</button>
+      </nav>
+      <div class="bottom">
+        <div id="intelName">Loading...</div>
+        <button id="logoutBtn" class="btn">Logout</button>
+        <button id="themeToggle" class="btn">Theme</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><h1>Intelligence Dashboard</h1></header>
+      <section class="content">
+        <div class="cards">
+          <div class="card"><h3>Ongoing Ops</h3><p id="ongoingOps">—</p></div>
+          <div class="card"><h3>Completed Missions</h3><p id="completedMissions">—</p></div>
+          <div class="card"><h3>Pending Reviews</h3><p id="pendingReview">—</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Chatbox -->
+  <div id="chatbox-container">
+    <div id="chat-header">
+      <span>Hisbah Chat Support</span>
+      <div class="chat-tabs">
+        <button class="tab-btn active" data-tab="chat">Chat</button>
+        <button class="tab-btn" data-tab="ai">AI Assistant</button>
+      </div>
+    </div>
+    <div id="chat-content">
+      <div class="tab-page active" id="chat-tab">
+        <div id="messages"></div>
+        <div id="chat-input-section">
+          <input type="text" id="chat-message" placeholder="Type your message...">
+          <input type="file" id="chat-file" hidden>
+          <button id="send-file-btn">📎</button>
+          <button id="send-message-btn">➤</button>
+        </div>
+      </div>
+      <div class="tab-page" id="ai-tab">
+        <div id="ai-messages"></div>
+        <div id="ai-input-section">
+          <input type="text" id="ai-message" placeholder="Ask Hisbah AI anything...">
+          <button id="send-ai-btn">🤖</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/dashboards.js"></script>
+  <script type="module" src="../js/dashboard-chat.js"></script>
+</body>
+</html>
