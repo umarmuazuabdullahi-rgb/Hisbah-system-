@@ -1,0 +1,658 @@
+/* css/dashboard.css */
+/* Unified Hisbah system styles (light/dark support) */
+:root{
+  --primary:#006837;
+  --primary-dark:#004d29;
+  --accent:#d4af37;
+  --bg:#f6f6f6;
+  --card:#fff;
+  --text:#222;
+}
+body.dark {
+  --bg:#101418;
+  --card:#121416;
+  --text:#e6e6e6;
+  --primary:#81c784;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+  background:var(--bg);color:var(--text);transition:background .25s,color .25s;
+}
+
+/* Login / Register containers */
+.login-container,.register-container{
+  max-width:420px;margin:72px auto;background:var(--card);padding:28px;border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08)
+}
+h2{color:var(--primary);text-align:center;margin-bottom:18px}
+input,select,textarea{
+  width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;
+  background:transparent;color:var(--text)
+}
+button.btn{
+  width:100%;padding:11px;border-radius:8px;border:none;background:var(--primary);color:#fff;font-weight:700;
+  cursor:pointer;margin-top:8px;
+}
+button.btn:hover{background:var(--primary-dark)}
+
+/* Dashboard layout */
+.dashboard-wrapper{display:flex;min-height:100vh}
+.sidebar{
+  width:260px;background:var(--primary);color:#fff;padding:20px;display:flex;flex-direction:column;gap:18px;
+}
+.logo-section{text-align:center}
+.logo{width:84px;height:84px;border-radius:12px;margin-bottom:8px;object-fit:cover}
+.sidebar h2{color:var(--accent);font-size:18px;margin:0}
+.nav-links{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.nav-links button{
+  background:transparent;border:none;color:#fff;padding:10px;border-radius:8px;text-align:left;cursor:pointer;font-weight:600;
+}
+.nav-links button:hover{background:rgba(255,255,255,0.08)}
+.sidebar .bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+
+/* Main content */
+.main-content{flex:1;padding:22px;min-height:100vh;background:transparent}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.topbar h1{color:var(--primary);margin:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:18px}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.card h3{margin:0 0 8px 0;color:var(--primary)}
+
+/* Add Employee form and table */
+.form-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.form-row .full{grid-column:1/-1}
+.table{width:100%;border-collapse:collapse;margin-top:12px}
+.table th,.table td{padding:10px;border-bottom:1px solid rgba(0,0,0,.06);text-align:left}
+.table th{background:transparent;color:var(--primary);font-weight:700}
+
+/* Chat area (bottom full-width) */
+.chatbar{
+  position:fixed;left:0;right:0;bottom:0;background:linear-gradient(90deg,rgba(0,0,0,.03),rgba(0,0,0,.02));
+  border-top:1px solid rgba(0,0,0,.06);padding:12px;display:flex;flex-direction:column;gap:8px;
+}
+.chat-tabs{display:flex;gap:8px}
+.chat-tabs button{padding:8px 12px;border-radius:8px;border:none;background:#eee;cursor:pointer}
+.chat-tabs button.active{background:var(--primary);color:#fff}
+.chat-window{display:flex;gap:12px;align-items:flex-end}
+.messages{flex:1;max-height:280px;overflow:auto;padding:12px;border-radius:10px;background:var(--card)}
+.msg{margin-bottom:10px;padding:8px 10px;border-radius:8px;display:inline-block;max-width:86%}
+.msg.me{background:var(--primary);color:#fff;margin-left:auto}
+.msg.other{background:#f1f1f1;color:var(--text)}
+.msg .meta{font-size:12px;opacity:.7;margin-bottom:6px}
+.chat-controls{display:flex;gap:8px;align-items:center}
+.input-file{display:none}
+.chat-input{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;background:transparent;color:var(--text)}
+
+/* Media */
+@media(max-width:900px){
+  .dashboard-wrapper{flex-direction:column}
+  .sidebar{width:100%;flex-direction:row;gap:12px;align-items:center;padding:12px}
+  .main-content{padding:12px}
+  .messages{max-height:220px}
+}/* ====== dashboard.css ====== */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  transition: 0.3s;
+}
+
+.dark-mode {
+  background-color: #111;
+  color: #f8f8f8;
+}
+
+header {
+  background-color: #006837;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 20px;
+}
+
+.dashboard-container {
+  padding: 25px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.dark-mode .card {
+  background-color: #1f1f1f;
+  color: #f4f4f4;
+}
+
+button {
+  background-color: #006837;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #004d29;
+}/* -------------------------------
+   HISBAH SYSTEM DASHBOARD STYLE
+   Theme: Light Green + Gold + White
+   Includes: Dark/Light Mode Switcher
+---------------------------------*/
+
+/* 🌿 Root Variables */
+:root {
+  --hisbah-green: #2e7d32;
+  --hisbah-light-green: #a5d6a7;
+  --hisbah-gold: #d4af37;
+  --hisbah-white: #ffffff;
+  --hisbah-dark: #1c1c1c;
+  --hisbah-gray: #f5f5f5;
+  --text-color: #222;
+}
+
+/* 🌑 Dark Mode Variables */
+body.dark-mode {
+  --hisbah-green: #81c784;
+  --hisbah-light-green: #558b2f;
+  --hisbah-gold: #ffeb3b;
+  --hisbah-white: #222;
+  --hisbah-dark: #121212;
+  --hisbah-gray: #333;
+  --text-color: #fff;
+}
+
+/* 🌐 General Body Style */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: var(--hisbah-gray);
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* 🌿 Dashboard Layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--hisbah-gray);
+}
+
+/* 🌿 Sidebar */
+.sidebar {
+  width: 250px;
+  background: var(--hisbah-green);
+  color: var(--hisbah-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  transition: background 0.3s;
+}
+
+.sidebar h2 {
+  font-size: 1.6rem;
+  color: var(--hisbah-gold);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  margin: 0.8rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar ul li a {
+  display: block;
+  text-decoration: none;
+  color: var(--hisbah-white);
+  font-weight: 500;
+  padding: 0.8rem;
+  border-radius: 12px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.sidebar ul li a:hover {
+  background: var(--hisbah-gold);
+  color: var(--hisbah-dark);
+  transform: scale(1.03);
+}
+
+/* 🌟 Buttons */
+.sidebar button {
+  background: var(--hisbah-gold);
+  color: var(--hisbah-dark);
+  border: none;
+  padding: 10px 18px;
+  margin-top: 10px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.sidebar button:hover {
+  background: var(--hisbah-white);
+  color: var(--hisbah-green);
+  transform: scale(1.05);
+}
+
+/* 🌿 Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background: var(--hisbah-white);
+  transition: background 0.3s;
+}
+
+body.dark-mode .main-content {
+  background: var(--hisbah-dark);
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--hisbah-light-green);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: var(--hisbah-green);
+}
+
+body.dark-mode header h1 {
+  color: var(--hisbah-gold);
+}
+
+header p {
+  font-size: 1rem;
+  color: var(--hisbah-green);
+}
+
+/* 🌿 Cards Layout */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+
+.card {
+  background: var(--hisbah-light-green);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  color: var(--hisbah-dark);
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--hisbah-green);
+}
+
+/* 🌿 Responsive Sidebar */
+@media (max-width: 900px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  .sidebar ul {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.8rem;
+  }
+  .sidebar ul li {
+    flex: none;
+  }
+  .main-content {
+    padding: 1rem;
+  }
+}
+
+/* 🌙 Dark Mode Elements */
+body.dark-mode .sidebar {
+  background: #2b2b2b;
+}
+
+body.dark-mode .card {
+  background: #3b3b3b;
+  color: #fff;
+}
+
+body.dark-mode .sidebar button {
+  background: var(--hisbah-gold);
+  color: #111;
+}
+
+/* 🌟 Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hisbah-green);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hisbah-gold);
+}/* ====== HISBAH DASHBOARD GLOBAL STYLE ====== */
+/* 🌿 Theme: Hisbah Green + Gold + White */
+/* 🌓 Includes Light & Dark Mode Switcher */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ====== Default Body ====== */
+body {
+  background: #f5f8f6;
+  color: #222;
+  transition: all 0.4s ease;
+}
+
+/* ====== Dashboard Layout ====== */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ====== Sidebar ====== */
+.sidebar {
+  background: #10693d; /* Hisbah Green */
+  color: #fff;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 10px;
+  transition: 0.3s;
+}
+
+.sidebar .logo-section {
+  text-align: center;
+}
+
+.sidebar .logo {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: #f6d365; /* Gold */
+}
+
+/* ====== Navigation ====== */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.nav-links button {
+  background: none;
+  color: white;
+  border: none;
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-links button:hover,
+.nav-links button.active {
+  background: #0d5d36;
+  transform: translateX(4px);
+}
+
+/* ====== Logout & Theme Switcher ====== */
+.logout-btn {
+  background: #e63946;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c62828;
+}
+
+.theme-switcher {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 25px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3.5px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #f6d365;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* ====== Main Content ====== */
+.main-content {
+  flex: 1;
+  padding: 25px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.topbar h1 {
+  color: #10693d;
+  font-weight: 700;
+}
+
+.topbar p {
+  font-weight: 500;
+}
+
+/* ====== Content Cards ====== */
+.content h2 {
+  color: #10693d;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  background: #f6fff7;
+}
+
+.card h3 {
+  color: #10693d;
+  margin-bottom: 8px;
+}
+
+.action-btn {
+  background: #10693d;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.action-btn:hover {
+  background: #0e5b35;
+}
+
+/* ====== Dark Mode ====== */
+body.dark-mode {
+  background: #0e1a13;
+  color: #f1f1f1;
+}
+
+body.dark-mode .sidebar {
+  background: #0c3b23;
+}
+
+body.dark-mode .nav-links button:hover {
+  background: #14522e;
+}
+
+body.dark-mode .card {
+  background: #142a1d;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .card h3,
+body.dark-mode h2,
+body.dark-mode .topbar h1 {
+  color: #f6d365;
+}
+
+body.dark-mode .action-btn {
+  background: #f6d365;
+  color: #0c3b23;
+}
+
+body.dark-mode .action-btn:hover {
+  background: #e9b94f;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
